@@ -1,4 +1,35 @@
 import streamlit as st
+import json
+import time
+
+# ---------------------------------------------------------
+# Diccionarios
+days = {
+        "Mon": "Lun",
+        "Tue": "Mar",
+        "Wed": "Mie",
+        "Thu": "Jue",
+        "Fra": "Vie",
+        "Sut": "Sab",
+        "Sun": "Dom"
+        }
+
+months = {
+        "Jan": "Ene",
+        "Feb": "Feb",
+        "Mar": "Mar",
+        "Apr": "Abr",
+        "May": "May",
+        "Jun": "Jun",
+        "Jul": "Jul",
+        "Aug": "Ago",
+        "Sep": "Sep",
+        "Oct": "Oct",
+        "Nov": "Nov",
+        "Dec": "Dic"
+        }
+# ----------------------------------------------------------
+
 
 # Funcion de login en main.py
 def login(usuario: str, contraseña: str):
@@ -44,3 +75,34 @@ def guardar_opciones(queso_p, azucar_p, almidon_p, masa_p, mantequilla_p, leche_
         parametros.close()
         st.success("Se guardaron las configuraciones")
         return
+
+    
+# Funcion de guardar parametros de creacion de pandebono y croissant
+def guardar_opciones_json(queso_p, azucar_p, almidon_p, masa_p, mantequilla_p, leche_p, queso_c, azucar_c, almidon_c, masa_c, mantequilla_c, leche_c):
+    ingredientes = {
+                "q_p": queso_p,
+                "a_p": azucar_p,
+                "al_p": almidon_p,
+                "m_p": masa_p,
+                "man_p": mantequilla_p,
+                "l_p": leche_p,
+                "q_c": queso_c,
+                "a_c": azucar_c,
+                "al_c": almidon_c,
+                "m_c": masa_c,
+                "man_c": mantequilla_c,
+                "l_c": leche_c,
+            }
+    with open("data/ingredientes.txt", "w") as parametros:
+        parametros.write(json.dumps(ingredientes))
+        parametros.close()
+        st.success("Se guardaron las configuraciones")
+        return
+
+
+def cargar_configuraciones_json():
+    with open("data/ingredientes.txt", "r") as parametros:
+        configuraciones = json.loads(parametros.readline())
+        parametros.close()
+        return configuraciones
+
