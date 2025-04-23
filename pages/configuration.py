@@ -1,6 +1,6 @@
 import streamlit as st
 import time
-from src.funciones import cargar_configuraciones_json, guardar_opciones_json
+from src.funciones import cargar_configuraciones_json, cargar_precios, guardar_opciones_json, guardar_precio
 
 # Limpieza de inputs si venimos de un "guardar"
 if st.session_state.get("limpiar_campos", False):
@@ -8,12 +8,14 @@ if st.session_state.get("limpiar_campos", False):
         "queso_pandebono", "almidon_pandebono", "mantequilla_pandebono",
         "azucar_pandebono", "masa_pandebono", "leche_pandebono",
         "queso_croissant", "almidon_croissant", "mantequilla_croissant",
-        "azucar_croissant", "masa_croissant", "leche_croissant"
+        "azucar_croissant", "masa_croissant", "leche_croissant", "precio_pandebono", 
+        "precio_croissant"
     ]:
         st.session_state[key] = ""
     st.session_state["limpiar_campos"] = False
 
 prev_conf = cargar_configuraciones_json()
+precios_preconf = cargar_precios()
 
 # Crear columnas principales
 left, right = st.columns(2)
@@ -45,6 +47,9 @@ azucar_c = right_r.text_input("Azucar por croissant", key="azucar_croissant", pl
 masa_c = right_r.text_input("Masa arepa por croissant", key="masa_croissant", placeholder=f"{prev_conf["m_c"]} g")
 leche_c = right_r.text_input("Leche por croissant", key="leche_croissant", placeholder=f"{prev_conf["l_c"]} ml")
 
+precio_p = left.text_input("**Precio pandebono**", key="precio_pandebono", placeholder=f"{precios_preconf[0]} $")
+precio_c = right.text_input("**Precio croissant**", key="precio_croissant", placeholder=f"{precios_preconf[1]} $")
+
 # Botones
 st.markdown("###")
 end_left, end_right = st.columns(2)
@@ -62,6 +67,7 @@ if guardar:
         queso_c=queso_c, almidon_c=almidon_c, mantequilla_c=mantequilla_c,
         azucar_c=azucar_c, masa_c=masa_c, leche_c=leche_c
     )
+    guardar_precio(precio_p, precio_c)
     st.session_state["limpiar_campos"] = True
     time.sleep(1.5) 
     st.rerun()

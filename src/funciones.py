@@ -1,4 +1,6 @@
 import streamlit as st
+import pandas as pd
+import os
 import json
 import time
 
@@ -15,18 +17,18 @@ days = {
         }
 
 months = {
-        "Jan": "Ene",
-        "Feb": "Feb",
-        "Mar": "Mar",
-        "Apr": "Abr",
-        "May": "May",
-        "Jun": "Jun",
-        "Jul": "Jul",
-        "Aug": "Ago",
-        "Sep": "Sep",
-        "Oct": "Oct",
-        "Nov": "Nov",
-        "Dec": "Dic"
+        "Jan": "01",
+        "Feb": "02",
+        "Mar": "03",
+        "Apr": "04",
+        "May": "05",
+        "Jun": "06",
+        "Jul": "07",
+        "Aug": "08",
+        "Sep": "09",
+        "Oct": "10",
+        "Nov": "11",
+        "Dec": "12"
         }
 # ----------------------------------------------------------
 
@@ -106,3 +108,43 @@ def cargar_configuraciones_json():
         parametros.close()
         return configuraciones
 
+
+def guardar_precio(precio_p, precio_c):
+    with open("data/precios.txt", "w") as precios:
+        precios.write(f"{precio_p},{precio_c}\n")
+        precios.close()
+        return
+
+def cargar_precios():
+    with open("data/precios.txt", "r") as precios:
+        ans = precios.readline().split(",")
+        return ans
+
+
+
+def cargar_tabla_ventas(nombre, cantidad):
+    local = time.asctime()
+    local = local.split()
+    local[0] = days[local[0]]
+    local[1] = months[local[1]]
+    true_local = [local[i] for i in [0,1,2,4]]
+
+    # Fecha actual organizada Año-mes-dia
+    time_data = f"{true_local[3]}-{true_local[1]}-{true_local[2]}"
+
+    nueva_compra = {
+        "nombre_cliente": nombre,
+        "dia": true_local[0],
+        "fecha": time_data,
+        "producto": "Pandebono",
+        "cantidad": cantidad,
+            }
+
+    df = pd.DataFrame([nueva_compra])
+    df['fecha'] = pd.to_datetime(df['fecha'])
+    path_csv = 'data/compras.csv'
+    if not os.path.isfile(path_csv):
+        df.to_csv(path_csv, index=False)
+    else:
+        df.to_csv(path_csv, mode='a', header=False, index=False)
+    return
