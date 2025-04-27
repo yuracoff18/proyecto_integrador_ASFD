@@ -36,10 +36,10 @@ if back:
 
 if confirm:
     if nombre_p != "" and pandebonos != "":
-        cargar_tabla_ventas(nombre=nombre_p, cantidad=int(pandebonos))
+        cargar_tabla_ventas(nombre=nombre_p, cantidad=int(pandebonos), nombre_producto="Pandebono")
 
     if nombre_c != "" and croissants != "":
-        cargar_tabla_ventas(nombre=nombre_c, cantidad=int(croissants))
+        cargar_tabla_ventas(nombre=nombre_c, cantidad=int(croissants), nombre_producto="Croissant")
     
     st.session_state["limpiar_campos"] = True
     st.success("Venta guardada con exito")

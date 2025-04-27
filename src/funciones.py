@@ -122,7 +122,7 @@ def cargar_precios():
 
 
 
-def cargar_tabla_ventas(nombre, cantidad):
+def cargar_tabla_ventas(nombre, cantidad, nombre_producto):
     local = time.asctime()
     local = local.split()
     local[0] = days[local[0]]
@@ -136,7 +136,7 @@ def cargar_tabla_ventas(nombre, cantidad):
         "nombre_cliente": nombre,
         "dia": true_local[0],
         "fecha": time_data,
-        "producto": "Pandebono",
+        "producto": nombre_producto,
         "cantidad": cantidad,
             }
 
