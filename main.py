@@ -3,6 +3,8 @@ from src import funciones
 
 
 def main():
+    
+    st.image("assets/logo.png", use_container_width=True)
 
     st.title("Inicio de sesion")
 
